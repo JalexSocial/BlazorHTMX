@@ -1,4 +1,4 @@
-# Using HTMX with ASP.NET Core Blazor
+# ASP.NET Core Blazor Streaming Blazor Extension
 
 With the release of .NET 8, developers now have access to multiple rendering modes. One of those rendering modes is Static Server Rendering. This means you can render Blazor pages with component hierarchies as plain-old HTML pages.
 
@@ -28,9 +28,8 @@ JavaScript implementation that you'll see later.
     <link rel="stylesheet" href="BlazorHtmx.styles.css"/>
     <link rel="icon" type="image/png" href="favicon.png"/>
 
-    <script defer src="_framework/blazor.web.js"></script>
     <script defer src="https://unpkg.com/htmx.org@1.9.8"></script>
-    <script defer src="js/htmx-blazor.js"></script>
+    <script defer src="js/blazor.js"></script>
     <HeadOutlet/>
 </head>
 <body>
@@ -39,21 +38,7 @@ JavaScript implementation that you'll see later.
 </html>
 ```
 
-## Step 2. Hook into `enhancedload` event
-
-So remember when I said Enhanced Loading was a thing? Well, it is! This means that we need to reprocess any HTML that comes over the wire with HTMX for it to work. This is because enhanced load skips the lifecycle events that HTMX might be looking for, like `document load`.
-
-Let's implement the `htmx-blazor.js` file.
-
-```javascript
-// An enhanced load allows users to navigate between different pages
-window.Blazor.addEventListener("enhancedload", function () {
-    // HTMX need to reprocess any htmx tags because of enhanced loading
-    window.htmx.process(document.body);
-});
-```
-
-## Step 3. Implement a component and endpoint
+## Step 2. Implement a component and endpoint
 
 Let's add a component that we'll render as a fragment. In `Shared/LoveHtmx.razor` add the following HTML.
 
