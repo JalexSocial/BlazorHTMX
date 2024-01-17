@@ -1,23 +1,18 @@
 ﻿@page "/counter"
-@rendermode InteractiveServer
+@inject HtmxCounter.HtmxCounterState CounterState
 
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
-<p>Without the full Blazor.Web.Js this won't work.</p>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" 
-        @onclick="IncrementCount">Click me</button>
+<div class="mb-4">
+	<HtmxCounter State="CounterState"/>
+</div>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-
+	protected override void OnInitialized()
+	{
+		// reset counter on page reloads
+		CounterState.Value = 0;
+	}
 }
