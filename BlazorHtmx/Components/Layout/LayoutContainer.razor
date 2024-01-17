@@ -1,0 +1,21 @@
+﻿@using Htmx
+@inherits LayoutComponentBase
+
+@if (Context?.Request.IsHtmx() == true)
+{
+	<EmptyLayout>
+		@Body
+	</EmptyLayout>
+}
+else
+{
+	<MainLayout>
+		@Body
+	</MainLayout>
+}
+
+@code
+{
+	[CascadingParameter]
+	public HttpContext? Context { get; set; }
+}
