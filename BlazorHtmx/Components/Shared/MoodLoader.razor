@@ -1,0 +1,27 @@
+﻿@attribute [StreamRendering]
+
+<div class="alert alert-info">
+	<span class="text-lg-center">
+	@if (Message == null)
+	{
+		<span>Fetching current mood...</span>
+	}
+	else
+	{
+		@Message
+	}
+	</span>
+</div>
+
+@code{
+	[Parameter]
+	public string? Message { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(5000);
+
+		Message = "My mood is happy";
+	}
+
+}

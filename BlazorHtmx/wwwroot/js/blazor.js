@@ -45,8 +45,8 @@
 
                 // set a function in the public API for creating new EventSource objects
                 if (htmx.blazorSwapSsr == undefined) {
-                    htmx.blazorSwapSsr = blazorSwapSsr;
                     customElements.define('blazor-ssr-end', BlazorStreamingUpdate);
+                    htmx.blazorSwapSsr = blazorSwapSsr;
                 }
             }
         });
