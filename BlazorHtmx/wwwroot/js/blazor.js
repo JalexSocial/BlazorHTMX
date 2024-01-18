@@ -50,7 +50,10 @@
                 }
             },
             onEvent: function (name, evt) {
-                if (name === "htmx:beforeRequest") {
+                if (name === "htmx:load") {
+                    var detail = evt.detail;
+                }
+                else if (name === "htmx:beforeRequest") {
                     var element = evt.detail.elt;
                     if (evt.detail.requestConfig.target) {
                         element['__target'] = evt.detail.requestConfig.target;
@@ -72,7 +75,9 @@
                     container = document.getElementById(container.id);
                     swapSpec.swapStyle = "innerHTML";
 
-                    xhr.onprogress = function (e) {
+                    element['__targetcontainer'] = container;
+
+                    xhr.addEventListener("progress", e => {
                         diff = e.currentTarget.response.substring(last);
                         swap(container, diff, swapSpec);
 
@@ -81,7 +86,7 @@
 
                         last = e.loaded;
                         element['__streamedChars'] = last;
-                    };
+                    });
 
                 }
 
@@ -122,9 +127,6 @@
         }
 
         start.parentNode.insertBefore(newDiv, start);
-
-        start.parentNode.removeChild(start);
-        end.parentNode.removeChild(end);
 
         return newDiv;
     }
