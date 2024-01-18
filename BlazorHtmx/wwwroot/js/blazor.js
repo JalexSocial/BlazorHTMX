@@ -53,9 +53,6 @@
                 if (name === "htmx:beforeRequest") {
                     var element = evt.detail.elt;
                     if (evt.detail.requestConfig.target) {
-                        element['__target'] = evt.detail.requestConfig.target;
-                        //element = evt.detail.requestConfig.target;
-
                         evt.detail.requestConfig.target.addEventListener("htmx:beforeSwap",
                             e => {
                                 // Any html that was already streamed in could have been updated with
