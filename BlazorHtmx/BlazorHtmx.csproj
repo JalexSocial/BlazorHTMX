@@ -13,4 +13,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Htmx" Version="1.6.3" />
+    </ItemGroup>
+
 </Project>
