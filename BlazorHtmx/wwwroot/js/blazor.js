@@ -57,13 +57,44 @@
                         //element = evt.detail.requestConfig.target;
                     }
 
+                    var last = 0;
+                    var swapSpec = api.getSwapSpecification(element);
                     var xhr = evt.detail.xhr;
+
+                    // Create a container to swap into the correct place
+                    // All streamed html will be placed inside the container
+                    var container = document.createElement('div');
+                    container.id = crypto.randomUUID();
+
+                    swap(element, container.outerHTML, swapSpec);
+
+                    // From here on out we are swapping all content into the container
+                    container = document.getElementById(container.id);
+                    swapSpec.swapStyle = "innerHTML";
+
                     xhr.onprogress = function (e) {
-                        swap(element, e.currentTarget.response);
+                        diff = e.currentTarget.response.substring(last);
+                        swap(container, diff, swapSpec);
+
+                        swapSpec.settleDelay = 0;
+                        swapSpec.swapStyle = "beforeEnd";
+
+                        last = e.loaded;
+                        element['__streamedChars'] = last;
                     };
 
                 }
+
                 return true;
+            },
+            transformResponse: function (text, _xhr, elt) {
+                var lastLength = elt['__streamedChars'];
+
+                if (lastLength) {
+                   // text = text.substring(lastLength);
+                }
+
+                return text;
             }
         });
 
@@ -115,13 +146,13 @@
      * @param {HTMLElement} elt
      * @param {string} content
      */
-    function swap(elt, content) {
+    function swap(elt, content, swapSpec) {
 
         api.withExtensions(elt, function (extension) {
             content = extension.transformResponse(content, null, elt);
         });
 
-        var swapSpec = api.getSwapSpecification(elt);
+        swapSpec ??= api.getSwapSpecification(elt);
         var target = api.getTarget(elt);
         var settleInfo = api.makeSettleInfo(elt);
 
