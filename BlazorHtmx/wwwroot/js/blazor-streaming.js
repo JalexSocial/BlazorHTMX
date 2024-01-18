@@ -31,7 +31,7 @@
         }
     }
 
-    htmx.defineExtension("blazor",
+    htmx.defineExtension("blazor-streaming",
         {
             /**
              * Init saves the provided reference to the internal HTMX API.
