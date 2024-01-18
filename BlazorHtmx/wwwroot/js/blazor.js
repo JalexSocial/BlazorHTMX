@@ -99,7 +99,8 @@
                             // The very first swap into the container can be a replacement swap
                             swapSpec.swapStyle = "innerHTML";
 
-                            container = document.getElementById(container.id);
+                            // Ensure there is always a container even if not added to the dom
+                            container = document.getElementById(cid) ?? container;
                         }
 
                         // Compute any new html in this chunk
