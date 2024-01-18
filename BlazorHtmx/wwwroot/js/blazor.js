@@ -50,56 +50,70 @@
                 }
             },
             onEvent: function (name, evt) {
-                if (name === "htmx:load") {
-                    var detail = evt.detail;
-                }
-                else if (name === "htmx:beforeRequest") {
+                if (name === "htmx:beforeRequest") {
                     var element = evt.detail.elt;
                     if (evt.detail.requestConfig.target) {
                         element['__target'] = evt.detail.requestConfig.target;
                         //element = evt.detail.requestConfig.target;
+
+                        evt.detail.requestConfig.target.addEventListener("htmx:beforeSwap",
+                            e => {
+                                // Any html that was already streamed in could have been updated with
+                                // blazor ssr content so the final xhr response can be thrown away
+                                e.detail.shouldSwap = false;
+                            }, { once: true });
                     }
 
                     var last = 0;
                     var swapSpec = api.getSwapSpecification(element);
                     var xhr = evt.detail.xhr;
 
-                    // Create a container to swap into the correct place
-                    // All streamed html will be placed inside the container
-                    var container = document.createElement('div');
-                    container.id = crypto.randomUUID();
+                    // Create a container id for a temporary div container. All streamed html will be placed 
+                    // inside the container so that htmx swap methods work correctly
+                    var cid = crypto.randomUUID();
 
-                    swap(element, container.outerHTML, swapSpec);
+                    xhr.addEventListener("readystatechange", () => {
 
-                    // From here on out we are swapping all content into the container
-                    container = document.getElementById(container.id);
-                    swapSpec.swapStyle = "innerHTML";
+                        // If finished we can unwrap the container all html was stored into
+                        if (xhr.readyState === 4) {
+                            var container = document.getElementById(cid);
 
-                    element['__targetcontainer'] = container;
+                            if (container != null)
+                                unwrap(container);
+                        }
+                    });
 
                     xhr.addEventListener("progress", e => {
+
+                        var container = document.getElementById(cid);
+
+                        // If the container doesn't exist we need to create it and swap it into the element
+                        // target space. From here on we can stream responses into the container directly.
+                        if (container == null) {
+                            container = document.createElement('div');
+                            container.id = cid;
+
+                            // Swap in a container div to hold the streaming html
+                            swap(element, container.outerHTML, swapSpec);
+
+                            // The very first swap into the container can be a replacement swap
+                            swapSpec.swapStyle = "innerHTML";
+
+                            container = document.getElementById(container.id);
+                        }
+
+                        // Compute any new html in this chunk
                         diff = e.currentTarget.response.substring(last);
                         swap(container, diff, swapSpec);
 
                         swapSpec.settleDelay = 0;
-                        swapSpec.swapStyle = "beforeEnd";
-
+                        swapSpec.swapStyle = "beforeend";
                         last = e.loaded;
-                        element['__streamedChars'] = last;
                     });
 
                 }
 
                 return true;
-            },
-            transformResponse: function (text, _xhr, elt) {
-                var lastLength = elt['__streamedChars'];
-
-                if (lastLength) {
-                   // text = text.substring(lastLength);
-                }
-
-                return text;
             }
         });
 
