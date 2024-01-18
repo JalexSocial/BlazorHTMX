@@ -1,11 +1,16 @@
 ﻿@using Htmx
 @inherits LayoutComponentBase
+@using BlazorHtmx.Components.Layout
 
 @if (Context?.Request.IsHtmx() == true)
 {
-	<EmptyLayout>
-		@Body
-	</EmptyLayout>
+    <EmptyLayout>
+        @Body
+    </EmptyLayout>
+    <!-- OOB swap the navbar so it renders correctly - this is a temporary hack just to make the navbar render correctly -->
+    <div id="sidebar" class="sidebar" hx-swap-oob="true">
+        <NavMenu/>
+    </div>
 }
 else
 {
