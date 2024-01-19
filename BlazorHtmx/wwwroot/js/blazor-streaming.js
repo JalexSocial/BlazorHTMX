@@ -58,6 +58,9 @@
                                 // Any html that was already streamed in could have been updated with
                                 // blazor ssr content so the final xhr response can be thrown away
                                 e.detail.shouldSwap = false;
+
+                                htmx?.process(document.body);
+
                             }, { once: true });
                     }
 
