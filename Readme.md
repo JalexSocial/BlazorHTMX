@@ -1,21 +1,30 @@
 
-# ASP.NET Core Blazor Streaming HTMX Extension
+# ASP.NET Core Blazor Streaming HTMX Extension Technical Demo
 
-This repository is strictly for demonstration purposes and is based off of an original demonstration by [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh).  Khalid is the originator of the [Htmx.net] https://github.com/khalidabuhakmeh/Htmx.Net) nuget package, which provides server-side helper methods for HttpRequest and HttpResponse.  As for me (Michael Tanczos), I'm not a javascript expert.  I'm an explorer looking to find ways to utilize the powerful component model available inside Blazor as an engine to work in tandem with htmx with as minimal a payload as is possible. The community around mixing Htmx and Blazor 8 SSR is fragmented but I believe has a lot of potential to grow and I'm not sure where else to turn.
+This repository is strictly for demonstration purposes and is based off of an original demonstration by [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh).  Khalid is the originator of the [Htmx.net](https://github.com/khalidabuhakmeh/Htmx.Net) nuget package, which provides server-side helper methods for HttpRequest and HttpResponse.  As for me (Michael Tanczos), I'm not a javascript expert.  I'm an explorer looking to find ways to utilize the powerful component model available inside Blazor as an engine to work in tandem with htmx with as minimal a payload as is possible. The community around mixing Htmx and Blazor 8 SSR is fragmented but I believe has a lot of potential to grow and I'm not sure where else to turn.
 
 This article itself is a fork of Khalid's original repository, which demonstrated how to integrate Htmx with Blazor Web.  Blazor Web has a sizeable javascript dependency called "blazor.web.js" that has to load prior to making Blazor Streaming accessible to the client. The purpose of this repository is to demonstrate that Blazor SSR Streaming can work with Htmx as an extension.  
 
-Minified and compressed, the extension blazor-streaming.js is roughly 1.2 KB in size.  That being said, it is NOT a replacement for blazor.web.js and simply is an implementation of Blazor SSR streaming that works in tandem with Htmx.  This is a very early technical experiment to see if this is feasible.
+Minified and compressed, the extension blazor-streaming.js is roughly 1.2 KB in size.  That being said, it is NOT a replacement for blazor.web.js and simply is an implementation of Blazor SSR streaming that works in tandem with Htmx.  This is a very early technical experiment to see if this is feasible.  
 
-<video src="blazorhtmx.mp4"></video>
+[Demonstration Site](https://blazorhtmx20240118122407.azurewebsites.net/)  
+
+
+> :memo: **Note:** On the Weather page you can see the Weather load asynchronously and stream in one connection request as expected along with a "Mood Loader" component that fetches a mood after 5 seconds.
+
+https://github.com/JalexSocial/BlazorHtmx/assets/2651588/8ddc3360-62dc-4b94-aaaa-bc9891556336
+
+
 
 ## What can this extension do?
 
 **Enhanced navigation is not part of this extension. At present it primarily handles streaming html**.
 
-This extension allows you to load streamed Blazor content into any page without needing "blazor.web.js" first and foremost.  The HTMX extension aspect of it allows you to use HTMX to request streaming Blazor pages and to have that streaming content render in place. The approach that it uses is to interact with the ajax request as it is streaming and load content into a temporary container div that is swapped into place using whatever hx-swap method you like.  Any Blazor streaming enhancements are swapped into place as they are loaded into the dom.  
+This extension allows you to load streamed Blazor content into any page without needing "blazor.web.js" first and foremost.  The HTMX extension aspect of it allows you to use HTMX to request streaming Blazor pages and to have that streaming content render in place. The approach that it uses is to interact with the ajax request as it is streaming and load content into a temporary container div that is swapped into place using whatever hx-swap method you like.  Any Blazor streaming enhancements are swapped into place as they are loaded into the dom.   
 
-With the release of .NET 8, developers now have access to multiple rendering modes. One of those rendering modes is Static Server Rendering. This means you can render Blazor pages with component hierarchies as plain-old HTML pages.
+> :bulb: **Remember:** At present Blazor streaming is only supported by Blazor pages.
+
+With the release of .NET 8, developers now have access to multiple rendering modes. One of those rendering modes is Static Server Rendering. This means you can render Blazor pages with component hierarchies as plain-old HTML pages.  
 
 Finally, there is a new `RazorComponentResult<T>` that allows any ASP.NET Core endpoint (Minimal API, Razor Pages, or MVC) to return a rendered Blazor component.
 
