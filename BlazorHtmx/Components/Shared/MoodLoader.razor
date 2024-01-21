@@ -1,4 +1,5 @@
-﻿@attribute [StreamRendering]
+﻿@using BlazorHtmx.Components.Layout
+@attribute [StreamRendering]
 
 <div class="alert alert-info">
 	<span class="text-lg-center">
@@ -19,7 +20,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await Task.Delay(5000);
+		await Task.Delay(1400);
 
 		Message = "My mood is happy";
 	}

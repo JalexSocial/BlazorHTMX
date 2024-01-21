@@ -1,5 +1,7 @@
 using BlazorHtmx.Components;
+using BlazorHtmx.Components.Layout;
 using BlazorHtmx.Components.Shared;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,12 +28,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<HtmxApp<AppLayout>>();
 
 app.MapGet("/love-htmx",
     () => new RazorComponentResult<LoveHtmx>(new { Message = "I ❤️ ASP.NET Core" }));
 
+app.MapGet("/stream-mood", () => new RazorComponentResult<MoodLoader>()
+{
+	PreventStreamingRendering = false
+});
 
 app.MapPost("/count",
     (HtmxCounter.HtmxCounterState value) =>

@@ -4,19 +4,11 @@
 
 @if (Context?.Request.IsHtmx() == true)
 {
-    <EmptyLayout>
-        @Body
-    </EmptyLayout>
-    <!-- OOB swap the navbar so it renders correctly - this is a temporary hack just to make the navbar render correctly -->
-    <div id="sidebar" class="sidebar" hx-swap-oob="true">
-        <NavMenu/>
-    </div>
+	<EmptyLayout Body="@Body"/>
 }
 else
 {
-	<MainLayout>
-		@Body
-	</MainLayout>
+	<MainLayout Body="@Body"/>
 }
 
 @code

@@ -1,6 +1,6 @@
 ﻿@page "/weather"
 @attribute [StreamRendering]
-
+@layout HtmxLayout<MainLayout>
 @using BlazorHtmx.Components.Layout
 
 <PageTitle>Weather</PageTitle>
@@ -41,6 +41,10 @@ else
         </tbody>
     </table>
 }
+
+<div id="sidebar" class="sidebar" hx-swap-oob="true">
+	<NavMenu />
+</div>
 
 @code {
     private List<WeatherForecast>? forecasts;

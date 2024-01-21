@@ -1,5 +1,9 @@
-﻿@ChildContent
-
+﻿@inherits LayoutComponentBase
+@Body
+<!-- OOB swap the navbar so it renders correctly - this is a temporary hack just to make the navbar render correctly -->
+<div id="sidebar" class="sidebar" hx-swap-oob="true">
+	<NavMenu/>
+</div>
 @code
 {
 	[Parameter]
