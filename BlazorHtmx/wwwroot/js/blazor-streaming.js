@@ -8,6 +8,7 @@
 
     var api;
     var enableDomPreservation = true;
+    var componentLoaded = false;
 
     class BlazorStreamingUpdate extends HTMLElement {
         connectedCallback() {
@@ -45,11 +46,16 @@
 
                 // set a function in the public API for creating new EventSource objects
                 if (htmx.blazorSwapSsr == undefined) {
-                    customElements.define('blazor-ssr-end', BlazorStreamingUpdate);
+                    if (customElements.get('blazor-ssr-end') === undefined) {
+                        customElements.define('blazor-ssr-end', BlazorStreamingUpdate);
+                    }
                     htmx.blazorSwapSsr = blazorSwapSsr;
                 }
             },
             onEvent: function (name, evt) {
+                if (name === "htmx:afterOnLoad") {
+                    htmx?.process(document.body);
+                }
                 if (name === "htmx:beforeRequest") {
                     var element = evt.detail.elt;
                     if (evt.detail.requestConfig.target) {
@@ -57,10 +63,7 @@
                             e => {
                                 // Any html that was already streamed in could have been updated with
                                 // blazor ssr content so the final xhr response can be thrown away
-                                e.detail.shouldSwap = false;
-
-                                htmx?.process(document.body);
-
+                                //e.detail.shouldSwap = false;
                             }, { once: true });
                     }
 
