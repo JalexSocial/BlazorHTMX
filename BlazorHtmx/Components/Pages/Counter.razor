@@ -1,6 +1,7 @@
 ﻿@page "/counter"
 @inject HtmxCounter.HtmxCounterState CounterState
 @using BlazorHtmx.Components.Layout
+@using Htmx
 
 <PageTitle>Counter</PageTitle>
 
@@ -10,7 +11,17 @@
 	<HtmxCounter State="CounterState"/>
 </div>
 
+@if (HttpContext?.Request.IsHtmx() == true)
+{
+    <div id="sidebar" class="sidebar" hx-swap-oob="true">
+        <NavMenu />
+    </div>
+}
+
 @code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
 	protected override void OnInitialized()
 	{
 		// reset counter on page reloads

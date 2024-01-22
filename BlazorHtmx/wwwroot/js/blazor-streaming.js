@@ -56,7 +56,7 @@
                 if (name === "htmx:afterOnLoad") {
                     htmx?.process(document.body);
                 }
-                if (name === "htmx:beforeRequest") {
+                else if (name === "htmx:beforeRequest") {
                     var element = evt.detail.elt;
                     if (evt.detail.requestConfig.target) {
                         evt.detail.requestConfig.target.addEventListener("htmx:beforeSwap",

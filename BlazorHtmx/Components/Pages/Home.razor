@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject HtmxCounter.HtmxCounterState CounterState
 @using BlazorHtmx.Components.Layout
+@using Htmx
 
 @layout LayoutContainer
 
@@ -15,3 +16,16 @@
         Click Me For Blazor + HTMX
     </button>
 </div>
+
+@if (HttpContext?.Request.IsHtmx() == true)
+{
+    <div id="sidebar" class="sidebar" hx-swap-oob="true">
+        <NavMenu />
+    </div>
+}
+
+@code
+{
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+}

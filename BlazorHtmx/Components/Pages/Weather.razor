@@ -2,6 +2,7 @@
 @attribute [StreamRendering]
 @layout HtmxLayout<MainLayout>
 @using BlazorHtmx.Components.Layout
+@using Htmx
 
 <PageTitle>Weather</PageTitle>
 
@@ -42,12 +43,18 @@ else
     </table>
 }
 
-<div id="sidebar" class="sidebar" hx-swap-oob="true">
-	<NavMenu />
-</div>
+@if (@HttpContext?.Request.IsHtmx() == true)
+{
+    <div id="sidebar" class="sidebar" hx-swap-oob="true">
+        <NavMenu/>
+    </div>
+}
 
 @code {
     private List<WeatherForecast>? forecasts;
+
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
