@@ -1,4 +1,7 @@
+using BlazorHtmx;
 using BlazorHtmx.Components;
+using BlazorHtmx.Components.Antiforgery;
+using BlazorHtmx.Components.Configuration;
 using BlazorHtmx.Components.Layout;
 using BlazorHtmx.Components.Shared;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,6 +15,15 @@ builder.Services.AddRazorComponents()
 
 builder.Services
     .AddSingleton<HtmxCounter.HtmxCounterState>();
+
+builder.AddHtmx(config =>
+{
+	config.HistoryCacheSize = 0;
+	config.IndicatorClass = "htmx-indicator";
+	config.ScrollBehavior = ScrollBehavior.Auto;
+	config.RefreshOnHistoryMiss = true;
+	config.SelfRequestsOnly = true;
+});
 
 var app = builder.Build();
 
@@ -27,6 +39,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+app.UseMiddleware<HtmxAntiforgeryMiddleware>();
 
 app.MapRazorComponents<HtmxApp<AppLayout>>();
 

@@ -5,6 +5,11 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorHtmx", "BlazorHtmx\BlazorHtmx.csproj", "{9DC28A68-E582-4B28-8197-CDB9E824F67B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "License", "License", "{C69C7407-1407-4558-BECA-71CA36A65306}"
+	ProjectSection(SolutionItems) = preProject
+		License-Egil.md = License-Egil.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
