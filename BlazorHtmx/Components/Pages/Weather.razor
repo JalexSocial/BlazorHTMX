@@ -1,4 +1,4 @@
-﻿@page "/weather"
+﻿@page "/weather/{ZipCode:int?}"
 @attribute [StreamRendering]
 @layout HtmxLayout<MainLayout>
 @using BlazorHtmx.Components.Layout
@@ -55,6 +55,8 @@ else
 
     [CascadingParameter]
     public HttpContext? HttpContext { get; set; }
+
+    [Parameter] public int? ZipCode { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
