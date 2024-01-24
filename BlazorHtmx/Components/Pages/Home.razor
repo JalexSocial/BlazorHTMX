@@ -2,6 +2,7 @@
 @inject HtmxCounter.HtmxCounterState CounterState
 @using BlazorHtmx.Components.Layout
 @using Htmx
+@using Microsoft.AspNetCore.Components.Sections
 
 <PageTitle>Home</PageTitle>
 
@@ -20,6 +21,19 @@
         <NavMenu />
     </div>
 }
+<HtmxRequestView>
+    <PageContent>
+        <HtmxContent Id="test1">
+            <div>Test 1</div>
+        </HtmxContent>
+        <HtmxContent Id="test2">
+            <div>Test 2</div>
+        </HtmxContent>
+        <HtmxContent Id="test3">
+            <div>Test 3</div>
+        </HtmxContent>
+    </PageContent>
+</HtmxRequestView>
 
 @code
 {

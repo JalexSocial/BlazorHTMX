@@ -1,0 +1,21 @@
+﻿<div @attributes="_attributes">@ChildContent</div>
+
+@code {
+    private Dictionary<string, object> _attributes = new Dictionary<string, object>();
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string? OobSwap { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _attributes.Add("id", Id);
+        _attributes.Add("hx-swap-oob", OobSwap ?? "true");
+        base.OnInitialized();
+    }
+}
